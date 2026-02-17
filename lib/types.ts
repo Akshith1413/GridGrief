@@ -97,3 +97,32 @@ export interface NotificationRecord {
   scenarioId?: string | null;
 }
 
+export interface SubscriptionRecord {
+  id: string;
+  userId: string;
+  personId: string | null;
+  personQuery: string;
+  threshold: number;
+  channels: string[];
+  cooldownMinutes: number;
+  lastAlertAt: string | null;
+}
+
+export interface ReviewProposal {
+  id: string;
+  pairKey: string;
+  primaryPersonId: string;
+  candidatePersonId: string;
+  mergeConfidence: number;
+  status: string;
+  createdAt: string;
+  resolvedAt?: string;
+  resolvedBy?: string;
+  rationale: string;
+  strategyBreakdown: {
+    fuzzyName: number;
+    descriptor: number;
+    attributeCorrelation: number;
+    graphNeighborhood: number;
+  };
+}
