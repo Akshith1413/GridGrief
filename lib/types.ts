@@ -126,3 +126,29 @@ export interface ReviewProposal {
     graphNeighborhood: number;
   };
 }
+
+export interface EvidenceRecord {
+  id: string;
+  rawText: string;
+  sourceType: string;
+  sourceUrl: string;
+  sourceTrustScore: number;
+  timestamp: string;
+  ingestedAt: string;
+  nlpConfidence: number;
+  reportId: string;
+  locationId: string | null;
+  locationName: string | null;
+  personIds: string[];
+  relationships: string[];
+  location?: LocationRecord | null;
+}
+
+export interface ScenarioCatalogEntry {
+  id: string;
+  name: string;
+  summary: string;
+  recommendedQuery: string;
+  reportCount: number;
+}
+
