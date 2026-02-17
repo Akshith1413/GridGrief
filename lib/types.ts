@@ -64,3 +64,36 @@ export interface PersonRecord {
   matchScore?: number;
 }
 
+export interface AlertRecord {
+  id: string;
+  personId: string;
+  subscriptionId: string;
+  channels: string[];
+  reason: string;
+  message: string;
+  createdAt: string;
+}
+
+export interface CaseNoteRecord {
+  id: string;
+  personId: string | null;
+  personName?: string | null;
+  title: string;
+  body: string;
+  priority: string;
+  actor: string;
+  createdAt: string;
+}
+
+export interface NotificationRecord {
+  id: string;
+  type: string;
+  severity: string;
+  title: string;
+  message: string;
+  timestamp: string;
+  personId?: string | null;
+  reviewId?: string;
+  scenarioId?: string | null;
+}
+
