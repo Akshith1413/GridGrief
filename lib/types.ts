@@ -189,3 +189,53 @@ export interface DashboardOverview {
   sourceMix: Array<{ type: string; count: number }>;
   architecture: string[];
 }
+
+export interface SearchResponse {
+  query: string;
+  locationHint: string | null;
+  results: PersonRecord[];
+  explanation: string;
+}
+
+export interface BulkSearchResponse {
+  generatedAt: string;
+  totalQueries: number;
+  searches: Array<{
+    id: string;
+    query: string;
+    topMatch: PersonRecord | null;
+    candidates: PersonRecord[];
+    explanation: string;
+  }>;
+}
+
+export interface PersonDetailResponse {
+  person: PersonRecord;
+  evidence: EvidenceRecord[];
+  movementTrail: MovementTrailPoint[];
+  duplicates: ReviewProposal[];
+  alerts: AlertRecord[];
+  subscriptions: SubscriptionRecord[];
+  caseNotes: CaseNoteRecord[];
+}
+
+export interface GraphNode {
+  id: string;
+  type: string;
+  label: string;
+  confidence?: number;
+}
+
+export interface GraphEdge {
+  id: string;
+  source: string;
+  target: string;
+  label: string;
+  confidence?: number;
+}
+
+export interface GraphSnapshot {
+  nodes: GraphNode[];
+  edges: GraphEdge[];
+  reviewQueue: ReviewProposal[];
+}
