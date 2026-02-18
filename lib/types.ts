@@ -152,3 +152,40 @@ export interface ScenarioCatalogEntry {
   reportCount: number;
 }
 
+export interface DashboardOverview {
+  generatedAt: string;
+  metrics: {
+    totalReports: number;
+    deduplicatedReports: number;
+    personsTracked: number;
+    highConfidenceMatches: number;
+    activeConflicts: number;
+    averageConfidence: number;
+    reviewQueue: number;
+    reportsPerMinute: number;
+    activeAlerts: number;
+  };
+  liveTicker: Array<{
+    id: string;
+    message: string;
+    sourceType: string;
+    timestamp: string;
+    reportId?: string;
+    personId?: string;
+  }>;
+  persons: PersonRecord[];
+  alerts: AlertRecord[];
+  simulation: {
+    active: boolean;
+    scenarioId: string | null;
+    startedAt: string | null;
+    emitted: number;
+    total: number;
+    chaosMode: boolean;
+    completionMessage: string;
+  };
+  scenarioCatalog: Record<string, ScenarioCatalogEntry>;
+  serviceHealth: Record<string, string>;
+  sourceMix: Array<{ type: string; count: number }>;
+  architecture: string[];
+}
