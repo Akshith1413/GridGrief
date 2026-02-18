@@ -239,3 +239,27 @@ export interface GraphSnapshot {
   edges: GraphEdge[];
   reviewQueue: ReviewProposal[];
 }
+
+export interface MapSnapshot {
+  locations: LocationRecord[];
+  persons: Array<{
+    id: string;
+    name: string;
+    confidence: number;
+    status: string;
+    trail: MovementTrailPoint[];
+  }>;
+  heatmap: Array<{
+    locationId: string;
+    locationName: string;
+    lat: number;
+    lon: number;
+    intensity: number;
+  }>;
+  disasterZones: Array<{
+    id: string;
+    name: string;
+    points: Array<{ lat: number; lon: number }>;
+  }>;
+  shelters: LocationRecord[];
+}
