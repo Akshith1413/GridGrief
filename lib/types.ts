@@ -328,3 +328,21 @@ export interface AdminOverview {
   security: string[];
 }
 
+export interface RecommendedAction {
+  id: string;
+  severity: string;
+  title: string;
+  detail: string;
+}
+
+export interface CommandCenterOverview {
+  dashboard: DashboardOverview;
+  analytics: AnalyticsResponse;
+  notifications: NotificationRecord[];
+  caseNotes: CaseNoteRecord[];
+  recommendedActions: RecommendedAction[];
+  edgeNodes: AdminOverview["edgeNodes"];
+  reviewQueue: ReviewProposal[];
+  serviceHealth: Record<string, string>;
+}
+
