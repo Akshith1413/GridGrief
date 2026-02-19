@@ -263,3 +263,68 @@ export interface MapSnapshot {
   }>;
   shelters: LocationRecord[];
 }
+
+export interface AnalyticsResponse {
+  generatedAt: string;
+  statusBreakdown: Array<{
+    status: string;
+    count: number;
+  }>;
+  hotspotLeaderboard: Array<{
+    locationId: string;
+    locationName: string;
+    count: number;
+  }>;
+  conflictLeaderboard: Array<{
+    personId: string;
+    name: string;
+    conflicts: number;
+  }>;
+  confidenceBuckets: {
+    high: number;
+    medium: number;
+    low: number;
+  };
+  noteCoverage: {
+    totalNotes: number;
+    personsWithNotes: number;
+  };
+  sourceWeights: Record<string, number>;
+  notifications: NotificationRecord[];
+  implementationReadiness: Array<{
+    label: string;
+    score: number;
+    detail: string;
+  }>;
+}
+
+export interface AdminOverview {
+  serviceHealth: Record<string, string>;
+  auditLogs: Array<{
+    id: string;
+    type: string;
+    timestamp: string;
+    actor?: string;
+    detail?: string;
+  }>;
+  reviewQueue: ReviewProposal[];
+  subscriptions: SubscriptionRecord[];
+  caseNotes: CaseNoteRecord[];
+  notifications: NotificationRecord[];
+  users: Array<{
+    id: string;
+    name: string;
+    email: string;
+    role: string;
+  }>;
+  edgeNodes: Array<{
+    id: string;
+    name: string;
+    status: string;
+    hardware: string;
+    autonomyHours: number;
+    queuedReports: number;
+  }>;
+  security: string[];
+}
+
