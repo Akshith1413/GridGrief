@@ -346,3 +346,23 @@ export interface CommandCenterOverview {
   serviceHealth: Record<string, string>;
 }
 
+export interface ReverseSearchResponse {
+  event: EvidenceRecord;
+  matches: PersonRecord[];
+  explanation: string;
+}
+
+export type DemoRole = "admin" | "responder" | "family_member" | "reporter";
+
+export interface DemoSession {
+  accessToken: string;
+  accessTokenExpiresAt: string;
+  refreshToken: string;
+  refreshTokenExpiresAt: string;
+  user: {
+    id: string;
+    email: string;
+    name: string;
+    role: string;
+  };
+}
