@@ -52,3 +52,43 @@ function writeStoredSession(role: DemoRole, session: DemoSession) {
 
   window.localStorage.setItem(getSessionStorageKey(role), JSON.stringify(session));
 }
+
+function isSessionValid(session: DemoSession | null) {
+  if (!session) {
+    return false;
+  }
+
+  return new Date(session.accessTokenExpiresAt).getTime() - 10_000 > Date.now();
+}
+
+export async function apiRequest<T>(
+  path: string,
+  init: RequestInit = {},
+  token?: string,
+): Promise<T> {
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    ...init,
+    headers: {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...(init.headers ?? {}),
+    },
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    const fallback = `${response.status} ${response.statusText}`;
+    try {
+      const errorPayload = (await response.json()) as { error?: string };
+      throw new Error(errorPayload.error || fallback);
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+
+      throw new Error(fallback);
+    }
+  }
+
+  return (await response.json()) as T;
+}
