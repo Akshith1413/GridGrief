@@ -22,3 +22,33 @@ const ROLE_CREDENTIALS: Record<DemoRole, { email: string; password: string }> = 
     password: "demo-reporter",
   },
 };
+
+function getSessionStorageKey(role: DemoRole) {
+  return `${SESSION_KEY_PREFIX}-${role}`;
+}
+
+function readStoredSession(role: DemoRole): DemoSession | null {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  const raw = window.localStorage.getItem(getSessionStorageKey(role));
+  if (!raw) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(raw) as DemoSession;
+  } catch {
+    window.localStorage.removeItem(getSessionStorageKey(role));
+    return null;
+  }
+}
+
+function writeStoredSession(role: DemoRole, session: DemoSession) {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  window.localStorage.setItem(getSessionStorageKey(role), JSON.stringify(session));
+}
