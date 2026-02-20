@@ -117,3 +117,14 @@ export function apiDelete<T>(path: string, token?: string) {
     token,
   );
 }
+
+export async function ensureDemoSession(role: DemoRole = "admin"): Promise<DemoSession> {
+  const cached = readStoredSession(role);
+  if (isSessionValid(cached)) {
+    return cached as DemoSession;
+  }
+
+  const session = await apiPost<DemoSession>("/api/v1/auth/login", ROLE_CREDENTIALS[role]);
+  writeStoredSession(role, session);
+  return session;
+}
