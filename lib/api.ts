@@ -92,3 +92,28 @@ export async function apiRequest<T>(
 
   return (await response.json()) as T;
 }
+
+export function apiGet<T>(path: string, token?: string) {
+  return apiRequest<T>(path, { method: "GET" }, token);
+}
+
+export function apiPost<T>(path: string, body?: unknown, token?: string) {
+  return apiRequest<T>(
+    path,
+    {
+      method: "POST",
+      body: body ? JSON.stringify(body) : undefined,
+    },
+    token,
+  );
+}
+
+export function apiDelete<T>(path: string, token?: string) {
+  return apiRequest<T>(
+    path,
+    {
+      method: "DELETE",
+    },
+    token,
+  );
+}
