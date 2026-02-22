@@ -96,3 +96,25 @@ export function useLiveResource<T>(path: string, options: LiveResourceOptions<T>
       source.addEventListener(eventName, scheduleRefresh);
     }
 
+    source.onerror = () => {
+      scheduleRefresh();
+    };
+
+    return () => {
+      if (refreshTimeout) {
+        clearTimeout(refreshTimeout);
+      }
+      source.close();
+    };
+  }, [fetchResource, listen]);
+
+  return {
+    data,
+    loading,
+    error,
+    refresh: () => {
+      void fetchResource();
+    },
+    setData: setData as Dispatch<SetStateAction<T | null>>,
+  };
+}
