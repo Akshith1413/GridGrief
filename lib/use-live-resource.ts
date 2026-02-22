@@ -64,3 +64,35 @@ export function useLiveResource<T>(path: string, options: LiveResourceOptions<T>
       });
     }
   }, [authRole, path]);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    void fetchResource();
+    return () => {
+      mountedRef.current = false;
+    };
+  }, [fetchResource]);
+
+  useEffect(() => {
+    if (!listen) {
+      return;
+    }
+
+    const source = new EventSource(`${API_BASE_URL}/api/v1/events/stream`);
+    let refreshTimeout: ReturnType<typeof setTimeout> | null = null;
+
+    const scheduleRefresh = () => {
+      if (refreshTimeout) {
+        return;
+      }
+
+      refreshTimeout = setTimeout(() => {
+        refreshTimeout = null;
+        void fetchResource();
+      }, 400);
+    };
+
+    for (const eventName of LIVE_EVENTS) {
+      source.addEventListener(eventName, scheduleRefresh);
+    }
+
