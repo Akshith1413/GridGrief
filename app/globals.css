@@ -1,0 +1,56 @@
+:root {
+  color-scheme: light;
+  --bg: #f4efe4;
+  --bg-deep: #d4e1da;
+  --surface: rgba(255, 249, 241, 0.72);
+  --surface-strong: rgba(255, 248, 240, 0.92);
+  --line: rgba(21, 43, 36, 0.13);
+  --ink: #10221d;
+  --ink-soft: #52625d;
+  --accent: #c96433;
+  --accent-deep: #7b3517;
+  --positive: #2e7b61;
+  --warning: #b47a24;
+  --critical: #b44836;
+  --accent-soft: rgba(201, 100, 51, 0.16);
+  --positive-soft: rgba(46, 123, 97, 0.16);
+  --warning-soft: rgba(180, 122, 36, 0.16);
+  --critical-soft: rgba(180, 72, 54, 0.14);
+  --mono: "Cascadia Code", "Consolas", "Courier New", monospace;
+  --display: "Bahnschrift", "Segoe UI Variable Display", "Trebuchet MS", sans-serif;
+  --body: "Aptos", "Segoe UI", "Trebuchet MS", sans-serif;
+  --shadow: 0 30px 60px rgba(57, 67, 54, 0.16);
+  --shadow-glow: 0 40px 90px rgba(88, 66, 38, 0.18);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body.app-body {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--body);
+  background:
+    radial-gradient(circle at 12% 10%, rgba(201, 100, 51, 0.2), transparent 24%),
+    radial-gradient(circle at 88% 16%, rgba(46, 123, 97, 0.17), transparent 30%),
+    radial-gradient(circle at 50% 0%, rgba(255, 231, 189, 0.34), transparent 28%),
+    linear-gradient(180deg, var(--bg) 0%, #f8f2ea 54%, #efe5d7 100%);
+}
+
+body.app-body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.42;
+  background-image:
+    linear-gradient(rgba(16, 34, 29, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16, 34, 29, 0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
