@@ -101,3 +101,66 @@ textarea {
   background: radial-gradient(circle, rgba(201, 100, 51, 0.12), transparent 68%);
   pointer-events: none;
 }
+
+.brand-kicker,
+.eyebrow,
+.panel-kicker {
+  margin: 0;
+  font-size: 0.76rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.brand-title {
+  margin: 6px 0 0;
+  font-family: var(--display);
+  font-size: clamp(1.35rem, 1.2rem + 0.8vw, 2rem);
+  line-height: 1.08;
+}
+
+.nav-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.nav-link {
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  color: var(--ink-soft);
+  transition: background 150ms ease, color 150ms ease, border-color 150ms ease, transform 150ms ease;
+}
+
+.nav-link:hover,
+.nav-link-active {
+  background: rgba(201, 100, 51, 0.14);
+  border-color: rgba(201, 100, 51, 0.22);
+  color: var(--ink);
+  transform: translateY(-1px);
+}
+
+.page-frame {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.page-stack,
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.gap-sm {
+  gap: 12px;
+}
+
+.hero-grid,
+.split-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 22px;
+}
