@@ -270,3 +270,90 @@ textarea {
   color: var(--ink);
   box-shadow: none;
 }
+
+.panel {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 22px;
+  border-radius: 30px;
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.46), rgba(255, 255, 255, 0)),
+    var(--surface);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(14px);
+  animation: rise-in 560ms ease both;
+}
+
+.panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.2), transparent 38%, transparent 60%, rgba(46, 123, 97, 0.06));
+  pointer-events: none;
+}
+
+.panel-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.panel-title {
+  margin: 6px 0 6px;
+  font-family: var(--display);
+  font-size: clamp(1.2rem, 1rem + 0.5vw, 1.8rem);
+}
+
+.panel-description,
+.metric-detail,
+.inline-note,
+.person-row p,
+.empty-state p,
+.note-card p,
+.evidence-card p,
+.action-card p,
+.notification-card p,
+.readiness-card p,
+.leaderboard-item p {
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+.metric-grid,
+.service-grid,
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.metric-card,
+.service-card,
+.note-card,
+.evidence-card,
+.source-chip {
+  position: relative;
+  overflow: hidden;
+  padding: 16px;
+  border-radius: 22px;
+  border: 1px solid rgba(16, 34, 29, 0.08);
+  background: var(--surface-strong);
+  transition: transform 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.metric-card:hover,
+.service-card:hover,
+.note-card:hover,
+.evidence-card:hover,
+.source-chip:hover {
+  transform: translateY(-2px);
+  border-color: rgba(201, 100, 51, 0.18);
+  box-shadow: 0 20px 32px rgba(55, 59, 49, 0.1);
+}
+
