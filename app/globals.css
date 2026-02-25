@@ -443,3 +443,84 @@ textarea {
 .status-pill-critical {
   background: rgba(180, 72, 54, 0.14);
 }
+
+.confidence-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.confidence-track {
+  position: relative;
+  height: 12px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(16, 34, 29, 0.08);
+}
+
+.confidence-fill {
+  height: 100%;
+  border-radius: inherit;
+}
+
+.confidence-fill-positive {
+  background: linear-gradient(90deg, #3f9477, #63c4a2);
+}
+
+.confidence-fill-warning {
+  background: linear-gradient(90deg, #b47a24, #d9ab53);
+}
+
+.confidence-fill-critical {
+  background: linear-gradient(90deg, #b44836, #dd7a59);
+}
+
+.confidence-value {
+  font-family: var(--mono);
+  font-size: 0.88rem;
+}
+
+.person-row,
+.timeline-item {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 22px;
+  border: 1px solid rgba(16, 34, 29, 0.08);
+  background: rgba(255, 251, 244, 0.7);
+  transition: transform 150ms ease, border-color 150ms ease;
+}
+
+.person-row:hover {
+  transform: translateY(-2px);
+  border-color: rgba(201, 100, 51, 0.24);
+}
+
+.person-row-main {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.person-row-main h3,
+.empty-state h3,
+.note-card strong,
+.evidence-card h3,
+.action-card strong,
+.notification-card strong,
+.readiness-card strong,
+.leaderboard-item strong {
+  margin: 0 0 4px;
+}
+
+.person-row-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+}
+
