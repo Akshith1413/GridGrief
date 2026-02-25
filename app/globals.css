@@ -596,3 +596,65 @@ textarea {
   font-size: 0.78rem;
 }
 
+.person-pin-positive {
+  fill: rgba(46, 123, 97, 0.94);
+}
+
+.person-pin-warning {
+  fill: rgba(180, 122, 36, 0.94);
+}
+
+.person-pin-critical {
+  fill: rgba(180, 72, 54, 0.94);
+}
+
+.graph-edge {
+  stroke: rgba(16, 34, 29, 0.18);
+  stroke-width: 2;
+}
+
+.graph-node {
+  stroke: rgba(16, 34, 29, 0.12);
+}
+
+.graph-node-person {
+  fill: rgba(46, 123, 97, 0.13);
+}
+
+.graph-node-event {
+  fill: rgba(201, 100, 51, 0.12);
+}
+
+.graph-node-location {
+  fill: rgba(16, 34, 29, 0.09);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field span {
+  font-size: 0.84rem;
+  color: var(--ink-soft);
+}
+
+.field-checkbox {
+  justify-content: flex-end;
+}
+
+.input {
+  width: 100%;
+  border: 1px solid rgba(16, 34, 29, 0.1);
+  border-radius: 18px;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--ink);
+}
+
+.textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
