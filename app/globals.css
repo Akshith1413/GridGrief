@@ -730,3 +730,57 @@ textarea {
   border: 1px solid rgba(16, 34, 29, 0.08);
   background: var(--surface-strong);
 }
+
+.action-card-positive,
+.notification-card-positive {
+  background: linear-gradient(135deg, var(--positive-soft), rgba(255, 248, 240, 0.94));
+}
+
+.action-card-warning,
+.notification-card-warning {
+  background: linear-gradient(135deg, var(--warning-soft), rgba(255, 248, 240, 0.94));
+}
+
+.action-card-critical,
+.notification-card-critical {
+  background: linear-gradient(135deg, var(--critical-soft), rgba(255, 248, 240, 0.94));
+}
+
+.readiness-score,
+.leaderboard-value,
+.status-bar-value {
+  font-family: var(--display);
+  font-size: 1.35rem;
+}
+
+.readiness-track,
+.status-bar-track {
+  position: relative;
+  height: 12px;
+  margin-top: 12px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(16, 34, 29, 0.08);
+}
+
+.readiness-fill,
+.status-bar-fill {
+  height: 100%;
+  border-radius: inherit;
+}
+
+.readiness-fill-positive,
+.status-bar-fill-positive {
+  background: linear-gradient(90deg, #3f9477, #6ad0ac);
+}
+
+.readiness-fill-warning,
+.status-bar-fill-warning {
+  background: linear-gradient(90deg, #b47a24, #e0b15f);
+}
+
+.readiness-fill-critical,
+.status-bar-fill-critical {
+  background: linear-gradient(90deg, #b44836, #e5896c);
+}
+
