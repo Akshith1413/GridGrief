@@ -658,3 +658,75 @@ textarea {
   resize: vertical;
 }
 
+.source-mix {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.source-chip {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.timeline-item {
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.timeline-dot {
+  width: 16px;
+  height: 16px;
+  margin-top: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 8px rgba(201, 100, 51, 0.12);
+}
+
+.command-hero .hero-copy h1 {
+  max-width: 12ch;
+}
+
+.command-hero-stack {
+  display: grid;
+  gap: 14px;
+  min-width: min(320px, 100%);
+}
+
+.signal-badge {
+  position: relative;
+  padding: 16px 18px;
+  border-radius: 24px;
+  border: 1px solid rgba(16, 34, 29, 0.08);
+  background: rgba(255, 251, 244, 0.7);
+  box-shadow: 0 16px 28px rgba(67, 71, 59, 0.09);
+}
+
+.signal-badge span {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.signal-badge strong {
+  display: block;
+  margin-top: 8px;
+  font-family: var(--display);
+  font-size: clamp(1.6rem, 1.4rem + 0.8vw, 2.4rem);
+}
+
+.action-card,
+.notification-card,
+.readiness-card,
+.leaderboard-item,
+.source-weight-row,
+.status-bar-card {
+  padding: 16px;
+  border-radius: 22px;
+  border: 1px solid rgba(16, 34, 29, 0.08);
+  background: var(--surface-strong);
+}
