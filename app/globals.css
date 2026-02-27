@@ -824,3 +824,31 @@ textarea {
   background: linear-gradient(90deg, #c96433, #e3ad71);
 }
 
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(0.82);
+    opacity: 0.65;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
