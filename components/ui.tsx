@@ -71,3 +71,41 @@ export function MetricCard({
     </div>
   );
 }
+
+export function EventTicker({ items }: { items: DashboardOverview["liveTicker"] }) {
+  return (
+    <div className="ticker">
+      {items.slice(0, 8).map((item) => (
+        <article key={item.id} className="ticker-item">
+          <span className="ticker-meta">{titleCase(item.sourceType)}</span>
+          <p>{item.message}</p>
+          <span className="ticker-time">{formatShortTime(item.timestamp)}</span>
+        </article>
+      ))}
+    </div>
+  );
+}
+
+export function PersonListItem({ person }: { person: PersonRecord }) {
+  return (
+    <Link href={`/person/${person.id}`} className="person-row">
+      <div className="person-row-main">
+        <div>
+          <h3>{person.canonicalName}</h3>
+          <p>
+            {person.ageEstimate ? `${person.ageEstimate} yrs` : "Age unknown"} | {titleCase(person.gender)}
+          </p>
+        </div>
+        <StatusPill
+          label={titleCase(person.status)}
+          tone={person.status === "found" ? "positive" : person.conflictFlags.length ? "critical" : "warning"}
+        />
+      </div>
+      <ConfidenceBar value={person.compositeConfidence} />
+      <div className="person-row-footer">
+        <span>{person.lastKnownLocation?.name ?? "Location pending"}</span>
+        <span>{formatDateTime(person.updatedAt)}</span>
+      </div>
+    </Link>
+  );
+}
