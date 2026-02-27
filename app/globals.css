@@ -852,3 +852,44 @@ textarea {
     transform: translateY(0);
   }
 }
+
+@media (max-width: 1080px) {
+  .hero-grid,
+  .split-grid,
+  .split-grid-tight,
+  .metric-grid,
+  .service-grid,
+  .form-grid,
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-copy h1,
+  .hero-banner h1 {
+    max-width: none;
+  }
+
+  .app-topbar,
+  .hero-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 720px) {
+  .app-shell {
+    padding: 18px 14px 40px;
+  }
+
+  .panel,
+  .hero-banner,
+  .app-topbar {
+    padding: 18px;
+    border-radius: 22px;
+  }
+
+  .person-row-footer,
+  .person-row-main {
+    flex-direction: column;
+  }
+}
