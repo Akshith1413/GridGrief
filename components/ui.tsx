@@ -109,3 +109,43 @@ export function PersonListItem({ person }: { person: PersonRecord }) {
     </Link>
   );
 }
+
+export function ActionCard({ action }: { action: RecommendedAction }) {
+  return (
+    <article className={`action-card action-card-${action.severity}`}>
+      <div className="person-row-main">
+        <strong>{action.title}</strong>
+        <StatusPill label={titleCase(action.severity)} tone={action.severity} />
+      </div>
+      <p>{action.detail}</p>
+    </article>
+  );
+}
+
+export function ReadinessMeter({
+  label,
+  score,
+  detail,
+}: {
+  label: string;
+  score: number;
+  detail: string;
+}) {
+  return (
+    <article className="readiness-card">
+      <div className="person-row-main">
+        <div>
+          <strong>{label}</strong>
+          <p>{detail}</p>
+        </div>
+        <span className="readiness-score">{formatPercent(score)}</span>
+      </div>
+      <div className="readiness-track">
+        <div
+          className={`readiness-fill readiness-fill-${confidenceTone(score)}`}
+          style={{ width: `${Math.max(10, Math.round(score * 100))}%` }}
+        />
+      </div>
+    </article>
+  );
+}
