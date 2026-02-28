@@ -177,3 +177,42 @@ export function NotificationList({ items }: { items: NotificationRecord[] }) {
     </div>
   );
 }
+
+export function EmptyState({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="empty-state">
+      <h3>{title}</h3>
+      <p>{description}</p>
+    </div>
+  );
+}
+
+export function LoadingPanel({ label = "Loading live crisis data..." }: { label?: string }) {
+  return (
+    <div className="empty-state">
+      <div className="loading-pulse" />
+      <p>{label}</p>
+    </div>
+  );
+}
+
+export function ErrorPanel({
+  title = "Unable to load data",
+  message,
+}: {
+  title?: string;
+  message: string;
+}) {
+  return (
+    <div className="empty-state empty-state-error">
+      <h3>{title}</h3>
+      <p>{message}</p>
+    </div>
+  );
+}
