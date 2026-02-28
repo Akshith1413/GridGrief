@@ -149,3 +149,31 @@ export function ReadinessMeter({
     </article>
   );
 }
+
+export function NotificationList({ items }: { items: NotificationRecord[] }) {
+  return (
+    <div className="stack gap-sm">
+      {items.length ? (
+        items.map((item) => (
+          <article key={item.id} className={`notification-card notification-card-${item.severity}`}>
+            <div className="person-row-main">
+              <div>
+                <strong>{item.title}</strong>
+                <p>{item.message}</p>
+              </div>
+              <StatusPill label={titleCase(item.severity)} tone={item.severity} />
+            </div>
+            <span className="inline-note">
+              {titleCase(item.type.replace(/[_-]/g, " "))} | {formatDateTime(item.timestamp)}
+            </span>
+          </article>
+        ))
+      ) : (
+        <EmptyState
+          title="Notification inbox is quiet"
+          description="New alerts, review changes, and simulation activity will appear here."
+        />
+      )}
+    </div>
+  );
+}
