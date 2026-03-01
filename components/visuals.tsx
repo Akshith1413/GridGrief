@@ -33,3 +33,73 @@ function mapBounds(snapshot: MapSnapshot) {
     maxLon: Math.max(...longitudes) + 0.02,
   };
 }
+
+export function MapCanvas({ snapshot }: { snapshot: MapSnapshot }) {
+  const width = 760;
+  const height = 420;
+  const bounds = mapBounds(snapshot);
+
+  return (
+    <div className="visual-shell">
+      <svg className="visual-canvas" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Tactical disaster map">
+        <rect className="map-background" x="0" y="0" width={width} height={height} rx="24" />
+
+        {snapshot.disasterZones.map((zone) => {
+          const points = zone.points
+            .map((point) => {
+              const projected = projectMapPoint(point.lat, point.lon, bounds, width, height);
+              return `${projected.x},${projected.y}`;
+            })
+            .join(" ");
+          return <polygon key={zone.id} className="zone-polygon" points={points} />;
+        })}
+
+        {snapshot.heatmap.map((spot) => {
+          const point = projectMapPoint(spot.lat, spot.lon, bounds, width, height);
+          return (
+            <g key={spot.locationId}>
+              <circle className="heatmap-pulse" cx={point.x} cy={point.y} r={18 + spot.intensity * 6} />
+              <circle className="heatmap-core" cx={point.x} cy={point.y} r={6 + spot.intensity} />
+            </g>
+          );
+        })}
+
+        {snapshot.persons.map((person) => {
+          const trail = person.trail;
+          const latest = trail.at(-1);
+          if (!latest) {
+            return null;
+          }
+
+          const point = projectMapPoint(latest.lat, latest.lon, bounds, width, height);
+          return (
+            <g key={person.id}>
+              <path className="trail-line" d={buildTrailPath(trail, snapshot, width, height)} />
+              <circle
+                className={`person-pin-${confidenceTone(person.confidence)}`}
+                cx={point.x}
+                cy={point.y}
+                r="9"
+              />
+              <text className="person-label" x={point.x + 12} y={point.y - 10}>
+                {person.name}
+              </text>
+            </g>
+          );
+        })}
+
+        {snapshot.shelters.map((location) => {
+          const point = projectMapPoint(location.lat, location.lon, bounds, width, height);
+          return (
+            <g key={location.id}>
+              <rect className="shelter-pin" x={point.x - 5} y={point.y - 5} width="10" height="10" rx="2" />
+              <text className="map-label" x={point.x + 10} y={point.y + 16}>
+                {location.name}
+              </text>
+            </g>
+          );
+        })}
+      </svg>
+    </div>
+  );
+}
