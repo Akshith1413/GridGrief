@@ -103,3 +103,68 @@ export function MapCanvas({ snapshot }: { snapshot: MapSnapshot }) {
     </div>
   );
 }
+
+export function GraphCanvas({ snapshot }: { snapshot: GraphSnapshot }) {
+  const width = 760;
+  const height = 420;
+  const groups = {
+    person: snapshot.nodes.filter((node) => node.type === "person"),
+    event: snapshot.nodes.filter((node) => node.type === "event"),
+    location: snapshot.nodes.filter((node) => node.type === "location"),
+  };
+  const positions = new Map<string, { x: number; y: number }>();
+
+  (["person", "event", "location"] as const).forEach((type, columnIndex) => {
+    const items = groups[type];
+    items.forEach((node, rowIndex) => {
+      const x = 120 + columnIndex * 260;
+      const y = 70 + rowIndex * Math.min(76, Math.max(48, 300 / Math.max(items.length, 1)));
+      positions.set(node.id, { x, y });
+    });
+  });
+
+  return (
+    <div className="visual-shell">
+      <svg className="visual-canvas" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Knowledge graph">
+        <rect className="graph-background" x="0" y="0" width={width} height={height} rx="24" />
+        {snapshot.edges.map((edge) => {
+          const source = positions.get(edge.source);
+          const target = positions.get(edge.target);
+          if (!source || !target) {
+            return null;
+          }
+
+          return (
+            <g key={edge.id}>
+              <line className="graph-edge" x1={source.x} y1={source.y} x2={target.x} y2={target.y} />
+              <text className="edge-label" x={(source.x + target.x) / 2 + 8} y={(source.y + target.y) / 2 - 6}>
+                {edge.label}
+              </text>
+            </g>
+          );
+        })}
+
+        {snapshot.nodes.map((node) => {
+          const point = positions.get(node.id);
+          if (!point) {
+            return null;
+          }
+
+          return (
+            <g key={node.id}>
+              <circle className={`graph-node graph-node-${node.type}`} cx={point.x} cy={point.y} r="26" />
+              <text className="node-title" x={point.x} y={point.y - 4} textAnchor="middle">
+                {node.label}
+              </text>
+              {typeof node.confidence === "number" ? (
+                <text className="node-subtitle" x={point.x} y={point.y + 16} textAnchor="middle">
+                  {formatPercent(node.confidence)}
+                </text>
+              ) : null}
+            </g>
+          );
+        })}
+      </svg>
+    </div>
+  );
+}
