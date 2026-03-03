@@ -90,3 +90,110 @@ export function SimulationControls({
     </div>
   );
 }
+
+export function ReportComposer({ onDone }: { onDone?: () => void }) {
+  const [rawText, setRawText] = useState("");
+  const [sourceType, setSourceType] = useState("manual");
+  const [personName, setPersonName] = useState("");
+  const [age, setAge] = useState("");
+  const [gender, setGender] = useState("unknown");
+  const [locationName, setLocationName] = useState("");
+  const [descriptors, setDescriptors] = useState("");
+  const [message, setMessage] = useState("Manual intake ready");
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    try {
+      await apiPost("/api/v1/reports/form", {
+        sourceType,
+        rawText,
+        metadata: {
+          personName: personName || null,
+          age: age ? Number(age) : null,
+          gender,
+          locationName: locationName || null,
+          descriptors: descriptors
+            .split(",")
+            .map((part) => part.trim())
+            .filter(Boolean),
+        },
+      });
+      startTransition(() => {
+        setRawText("");
+        setPersonName("");
+        setAge("");
+        setLocationName("");
+        setDescriptors("");
+        setMessage("Report ingested successfully");
+      });
+      onDone?.();
+    } catch (error) {
+      startTransition(() => {
+        setMessage(error instanceof Error ? error.message : "Submission failed");
+      });
+    }
+  }
+
+  return (
+    <form className="stack gap-sm" onSubmit={handleSubmit}>
+      <div className="form-grid">
+        <label className="field">
+          <span>Source</span>
+          <select className="input" value={sourceType} onChange={(event) => setSourceType(event.target.value)}>
+            <option value="manual">Manual</option>
+            <option value="social">Social</option>
+            <option value="ngo">NGO</option>
+            <option value="hospital">Hospital</option>
+            <option value="sms">SMS</option>
+          </select>
+        </label>
+        <label className="field">
+          <span>Person Name</span>
+          <input className="input" value={personName} onChange={(event) => setPersonName(event.target.value)} />
+        </label>
+        <label className="field">
+          <span>Age</span>
+          <input className="input" value={age} onChange={(event) => setAge(event.target.value)} />
+        </label>
+        <label className="field">
+          <span>Gender</span>
+          <select className="input" value={gender} onChange={(event) => setGender(event.target.value)}>
+            <option value="unknown">Unknown</option>
+            <option value="female">Female</option>
+            <option value="male">Male</option>
+          </select>
+        </label>
+      </div>
+      <label className="field">
+        <span>Location</span>
+        <input className="input" value={locationName} onChange={(event) => setLocationName(event.target.value)} />
+      </label>
+      <label className="field">
+        <span>Descriptors</span>
+        <input
+          className="input"
+          value={descriptors}
+          onChange={(event) => setDescriptors(event.target.value)}
+          placeholder="blue sari, silver hair, diabetic"
+        />
+      </label>
+      <label className="field">
+        <span>Raw Report</span>
+        <textarea
+          className="input textarea"
+          value={rawText}
+          onChange={(event) => setRawText(event.target.value)}
+          placeholder="Describe the sighting, hospital intake, shelter registration, or SMS-style report."
+          required
+        />
+      </label>
+      <div className="button-row">
+        <button className="button" type="submit">
+          Ingest Report
+        </button>
+        <p className="inline-note">{message}</p>
+      </div>
+    </form>
+  );
+}
