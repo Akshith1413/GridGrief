@@ -91,3 +91,39 @@ export function HomeScreen() {
           <EventTicker items={data.liveTicker} />
         </Panel>
       </section>
+
+      <div className="split-grid">
+        <Panel
+          kicker="Tactical Map"
+          title="Movement trails and heat clusters"
+          description="Shelters, hospitals, disaster boundary, and current person positions."
+          action={<Link href="/map">Open full map</Link>}
+        >
+          {map.data ? <MapCanvas snapshot={map.data} /> : <LoadingPanel label="Rendering tactical map..." />}
+        </Panel>
+        <Panel
+          kicker="Graph Intelligence"
+          title="Evidence-to-person linkage"
+          description="People, event records, and location nodes stitched into a live graph."
+          action={<Link href="/graph">Open graph view</Link>}
+        >
+          {graph.data ? <GraphCanvas snapshot={graph.data} /> : <LoadingPanel label="Rendering graph..." />}
+        </Panel>
+      </div>
+
+      <div className="split-grid">
+        <Panel
+          kicker="Simulation"
+          title="Run the recruiter demo sequence"
+          description="Launch scenarios from the documentation and watch the graph evolve in real time."
+        >
+          <SimulationControls scenarios={data.scenarioCatalog} onDone={dashboard.refresh} />
+        </Panel>
+        <Panel
+          kicker="Manual Intake"
+          title="Submit a new report"
+          description="Use the same canonical form for eyewitness notes, hospital intake, or offline SMS sync."
+        >
+          <ReportComposer onDone={dashboard.refresh} />
+        </Panel>
+      </div>
