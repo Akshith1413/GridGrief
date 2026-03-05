@@ -127,3 +127,39 @@ export function HomeScreen() {
           <ReportComposer onDone={dashboard.refresh} />
         </Panel>
       </div>
+
+      <div className="split-grid">
+        <Panel
+          kicker="Priority Persons"
+          title="Highest-confidence search tracks"
+          description="Each card keeps the explainability summary, last known location, and movement trail."
+          action={<Link href="/search">Search all people</Link>}
+        >
+          <div className="stack">
+            {data.persons.map((person) => (
+              <PersonListItem key={person.id} person={person} />
+            ))}
+          </div>
+        </Panel>
+        <Panel
+          kicker="Architecture Spine"
+          title="What the system is doing"
+          description="The platform mirrors the document's edge, ingestion, intelligence, decision, and UI layers."
+        >
+          <div className="stack">
+            {data.architecture.map((item) => (
+              <div key={item} className="note-card">
+                <p>{item}</p>
+              </div>
+            ))}
+            <div className="service-grid">
+              {Object.entries(data.serviceHealth).map(([name, status]) => (
+                <div key={name} className="service-card">
+                  <p>{titleCase(name.replace(/([A-Z])/g, " $1"))}</p>
+                  <StatusPill label={titleCase(status)} tone={status === "healthy" ? "positive" : "warning"} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </Panel>
+      </div>
