@@ -163,3 +163,34 @@ export function HomeScreen() {
           </div>
         </Panel>
       </div>
+
+      <Panel
+        kicker="Explainability"
+        title="Why Ramesh is ranked highest right now"
+        description="The backend carries a machine-readable explanation object for every profile."
+      >
+        {data.persons[0] ? (
+          <div className="split-grid split-grid-tight">
+            <div className="stack gap-sm">
+              <h3>{data.persons[0].canonicalName}</h3>
+              <ConfidenceBar value={data.persons[0].compositeConfidence} />
+              <p>{data.persons[0].explanation.summary}</p>
+              <p className="inline-note">{data.persons[0].explanation.confidence_breakdown}</p>
+            </div>
+            <div className="stack gap-sm">
+              {data.persons[0].explanation.sources.map((source) => (
+                <div key={`${source.type}-${source.timestamp}`} className="note-card">
+                  <strong>{titleCase(source.type)}</strong>
+                  <p>{source.detail}</p>
+                  <span className="inline-note">
+                    weight {source.weight} | contribution {source.contribution}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : null}
+      </Panel>
+    </div>
+  );
+}
