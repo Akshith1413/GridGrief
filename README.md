@@ -48,4 +48,3 @@ Set `NEXT_PUBLIC_API_URL` if your backend is not running on `http://localhost:40
 
 - `docs/IMPLEMENTATION_MATRIX.md` maps the original document to current implementation status
 - `docs/UNIQUE_FEATURES_AND_EXTRAS.md` lists the extra features added beyond the original spec
-
