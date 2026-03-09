@@ -50,3 +50,28 @@ export function DashboardScreen() {
           </Link>
         </div>
       </section>
+
+      <div className="metric-grid">
+        <MetricCard label="Tracked Profiles" value={formatNumber(data.metrics.personsTracked)} detail="Active person nodes" />
+        <MetricCard label="High Confidence" value={formatNumber(data.metrics.highConfidenceMatches)} detail="Past 75% threshold" tone="positive" />
+        <MetricCard label="Conflicts" value={formatNumber(data.metrics.activeConflicts)} detail="Contradictory location records" tone="critical" />
+        <MetricCard label="Avg Confidence" value={formatPercent(data.metrics.averageConfidence)} detail="Live composite score" />
+        <MetricCard label="Review Queue" value={formatNumber(data.metrics.reviewQueue)} detail="Human merge decisions" tone="warning" />
+        <MetricCard label="Active Alerts" value={formatNumber(data.metrics.activeAlerts)} detail="Subscriptions triggered" tone="warning" />
+      </div>
+
+      <div className="split-grid">
+        <Panel kicker="Live Feed" title="Operations ticker" description="Every ingestion and scoring event flows through here.">
+          <EventTicker items={data.liveTicker} />
+        </Panel>
+        <Panel kicker="Service Mesh" title="Microservice health" description="Current status of the demo orchestration layer.">
+          <div className="service-grid">
+            {Object.entries(data.serviceHealth).map(([service, status]) => (
+              <div key={service} className="service-card">
+                <p>{titleCase(service.replace(/([A-Z])/g, " $1"))}</p>
+                <StatusPill label={titleCase(status)} tone={status === "healthy" ? "positive" : "warning"} />
+              </div>
+            ))}
+          </div>
+        </Panel>
+      </div>
