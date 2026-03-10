@@ -75,3 +75,36 @@ export function DashboardScreen() {
           </div>
         </Panel>
       </div>
+
+      <div className="split-grid">
+        <Panel kicker="Map Board" title="Current shelter and hospital picture" description="Live trails and hotspot layering.">
+          {map.data ? <MapCanvas snapshot={map.data} /> : <LoadingPanel label="Refreshing map board..." />}
+        </Panel>
+        <Panel kicker="Scenario Controls" title="Drive the demo" description="Start the documented scenarios and feed more evidence into the graph.">
+          <SimulationControls scenarios={data.scenarioCatalog} onDone={dashboard.refresh} />
+          <div className="source-mix">
+            {data.sourceMix.map((source) => (
+              <div key={source.type} className="source-chip">
+                <span>{titleCase(source.type)}</span>
+                <strong>{source.count}</strong>
+              </div>
+            ))}
+          </div>
+        </Panel>
+      </div>
+
+      <div className="split-grid">
+        <Panel kicker="Priority Queue" title="People to act on now" description="Profiles with location evidence, conflict flags, and explainability.">
+          <div className="stack">
+            {data.persons.map((person) => (
+              <PersonListItem key={person.id} person={person} />
+            ))}
+          </div>
+        </Panel>
+        <Panel kicker="Manual Intake" title="Add fresh evidence" description="The same canonical event shape powers form submissions and edge sync.">
+          <ReportComposer onDone={dashboard.refresh} />
+        </Panel>
+      </div>
+    </div>
+  );
+}
