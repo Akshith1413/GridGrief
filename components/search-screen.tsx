@@ -64,3 +64,38 @@ export function SearchScreen() {
       });
     }
   }
+
+  useEffect(() => {
+    if (!seedResults.data) {
+      return;
+    }
+
+    if (!results) {
+      setResults(seedResults.data);
+    }
+  }, [results, seedResults.data]);
+
+  useEffect(() => {
+    if (!deferredQuery.trim()) {
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      void runSearch();
+    }, 350);
+
+    return () => clearTimeout(timeout);
+  }, [deferredQuery, runSearch]);
+
+  if (seedResults.loading && !seedResults.data) {
+    return <LoadingPanel label="Preparing search intelligence..." />;
+  }
+
+  if (seedResults.error && !seedResults.data) {
+    return <ErrorPanel message={seedResults.error} />;
+  }
+
+  const payload = results ?? seedResults.data;
+  if (!payload) {
+    return <ErrorPanel message="Search payload missing." />;
+  }
