@@ -99,3 +99,53 @@ export function SearchScreen() {
   if (!payload) {
     return <ErrorPanel message="Search payload missing." />;
   }
+
+  return (
+    <div className="page-stack">
+      <section className="hero-banner">
+        <div>
+          <p className="eyebrow">Search & Matching</p>
+          <h1>Query by name, descriptors, location hints, or entire family lists to surface explainable candidates.</h1>
+        </div>
+        <StatusPill label={`${formatNumber(payload.results.length)} candidates`} tone="warning" />
+      </section>
+
+      <div className="split-grid">
+        <Panel kicker="Search Query" title="Re-rank the graph" description="Use free-text plus optional radius and status constraints.">
+          <div className="stack gap-sm">
+            <label className="field">
+              <span>Query</span>
+              <input className="input" value={query} onChange={(event) => setQuery(event.target.value)} />
+            </label>
+            <div className="form-grid">
+              <label className="field">
+                <span>Status</span>
+                <select className="input" value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)}>
+                  <option value="">Any</option>
+                  <option value="missing">Missing</option>
+                  <option value="found">Found</option>
+                </select>
+              </label>
+              <label className="field">
+                <span>Location Hint</span>
+                <input className="input" value={locationName} onChange={(event) => setLocationName(event.target.value)} />
+              </label>
+              <label className="field">
+                <span>Radius (km)</span>
+                <input className="input" value={radiusKm} onChange={(event) => setRadiusKm(event.target.value)} />
+              </label>
+            </div>
+            <div className="button-row">
+              <button className="button" type="button" onClick={() => void runSearch()}>
+                {searching ? "Searching..." : "Run Search"}
+              </button>
+              <p className="inline-note">{payload.explanation}</p>
+            </div>
+            {error ? <ErrorPanel title="Search issue" message={error} /> : null}
+          </div>
+        </Panel>
+
+        <Panel kicker="New Intake" title="Add evidence while you search" description="Report submissions immediately re-enter the ranking pipeline.">
+          <ReportComposer onDone={() => void runSearch()} />
+        </Panel>
+      </div>
