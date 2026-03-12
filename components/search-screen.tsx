@@ -149,3 +149,57 @@ export function SearchScreen() {
           <ReportComposer onDone={() => void runSearch()} />
         </Panel>
       </div>
+
+      <Panel kicker="Ranked Results" title="Candidate matches" description="Confidence, last known location, and conflict state are all visible up front.">
+        <div className="stack">
+          {payload.results.length ? (
+            payload.results.map((person) => <PersonListItem key={person.id} person={person} />)
+          ) : (
+            <EmptyState title="No matches yet" description="Broaden the query or remove the radius filter to surface more candidates." />
+          )}
+        </div>
+      </Panel>
+
+      <Panel kicker="Bulk Family Search" title="Batch multiple missing-person names at once" description="An upgraded workflow that helps responders and families compare multiple probable matches in one pass.">
+        <div className="split-grid">
+          <div className="stack gap-sm">
+            <label className="field">
+              <span>One person per line</span>
+              <textarea className="input textarea" value={bulkInput} onChange={(event) => setBulkInput(event.target.value)} />
+            </label>
+            <div className="button-row">
+              <button className="button" type="button" onClick={() => void runBulkSearch()}>
+                Run Bulk Search
+              </button>
+              <p className="inline-note">{bulkMessage}</p>
+            </div>
+          </div>
+          <div className="stack gap-sm">
+            {bulkResults?.searches.length ? (
+              bulkResults.searches.map((search) => (
+                <article key={search.id} className="note-card">
+                  <div className="person-row-main">
+                    <strong>{search.query}</strong>
+                    {search.topMatch ? (
+                      <StatusPill label={formatPercent(search.topMatch.matchScore ?? search.topMatch.compositeConfidence)} tone="positive" />
+                    ) : (
+                      <StatusPill label="No match" tone="warning" />
+                    )}
+                  </div>
+                  <p>{search.explanation}</p>
+                  <div className="stack gap-sm">
+                    {search.candidates.slice(0, 3).map((candidate) => (
+                      <PersonListItem key={`${search.id}-${candidate.id}`} person={candidate} />
+                    ))}
+                  </div>
+                </article>
+              ))
+            ) : (
+              <EmptyState title="Bulk search is idle" description="Run a family list through the platform to compare multiple probable matches at once." />
+            )}
+          </div>
+        </div>
+      </Panel>
+    </div>
+  );
+}
