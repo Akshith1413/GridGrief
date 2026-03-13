@@ -57,3 +57,56 @@ export function CommandCenterScreen() {
       });
     }
   }
+
+  if (center.loading && !center.data) {
+    return <LoadingPanel label="Warming up the command center..." />;
+  }
+
+  if (center.error || !center.data) {
+    return <ErrorPanel message={center.error ?? "Command center data is unavailable."} />;
+  }
+
+  const data = center.data;
+  const dashboard = data.dashboard;
+  const analytics = data.analytics;
+  const pendingReviews = data.reviewQueue.filter((proposal) => proposal.status === "pending");
+
+  return (
+    <div className="page-stack">
+      <section className="hero-banner command-hero">
+        <div className="hero-copy">
+          <p className="eyebrow">Command Center</p>
+          <h1>Run the crisis room with live signal, human judgment, and gorgeous operational context.</h1>
+          <p className="hero-text">
+            This upgraded surface combines the graph, alerting, duplicate review, casework notes, and tactical
+            readiness into one cinematic operator view.
+          </p>
+          <div className="button-row">
+            <Link className="button" href="/search">
+              Open Search Intelligence
+            </Link>
+            <Link className="button button-ghost" href="/admin">
+              Open Admin Controls
+            </Link>
+          </div>
+          <div className="mini-stat-row">
+            <StatusPill label={`${pendingReviews.length} pending reviews`} tone="warning" />
+            <StatusPill label={`${dashboard.metrics.activeAlerts} active alerts`} tone="critical" />
+            <StatusPill label={`${analytics.noteCoverage.totalNotes} responder notes`} tone="positive" />
+          </div>
+        </div>
+        <div className="command-hero-stack">
+          <div className="signal-badge">
+            <span>Live Confidence</span>
+            <strong>{formatPercent(dashboard.metrics.averageConfidence)}</strong>
+          </div>
+          <div className="signal-badge">
+            <span>Tracked Profiles</span>
+            <strong>{formatNumber(dashboard.metrics.personsTracked)}</strong>
+          </div>
+          <div className="signal-badge">
+            <span>Reports Ingested</span>
+            <strong>{formatNumber(dashboard.metrics.totalReports)}</strong>
+          </div>
+        </div>
+      </section>
