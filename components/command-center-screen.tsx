@@ -110,3 +110,48 @@ export function CommandCenterScreen() {
           </div>
         </div>
       </section>
+
+      <div className="metric-grid">
+        <MetricCard label="High Confidence" value={formatNumber(dashboard.metrics.highConfidenceMatches)} detail="Profiles over the 75% threshold" tone="positive" />
+        <MetricCard label="Conflict Flags" value={formatNumber(dashboard.metrics.activeConflicts)} detail="Contradictory records requiring judgment" tone="critical" />
+        <MetricCard label="Review Queue" value={formatNumber(pendingReviews.length)} detail="Borderline duplicate proposals" tone="warning" />
+        <MetricCard label="Hotspots" value={formatNumber(analytics.hotspotLeaderboard.length)} detail="Active locations on the leaderboard" />
+        <MetricCard label="Note Coverage" value={formatNumber(analytics.noteCoverage.personsWithNotes)} detail="Profiles with case notes attached" />
+        <MetricCard label="Live Throughput" value={formatNumber(dashboard.metrics.reportsPerMinute)} detail="Recent reports across the pipeline" />
+      </div>
+
+      <div className="split-grid">
+        <Panel kicker="Priority Actions" title="What the room should do next" description="Auto-synthesized next steps derived from alerts, conflicts, edge backlog, and merge review state.">
+          <div className="stack gap-sm">
+            {data.recommendedActions.map((action) => (
+              <ActionCard key={action.id} action={action} />
+            ))}
+          </div>
+        </Panel>
+
+        <Panel kicker="Readiness Index" title="System implementation posture" description="A compact scorecard for the expanded platform surface.">
+          <div className="stack gap-sm">
+            {analytics.implementationReadiness.map((item) => (
+              <ReadinessMeter key={item.label} label={item.label} score={item.score} detail={item.detail} />
+            ))}
+          </div>
+        </Panel>
+      </div>
+
+      <div className="split-grid">
+        <Panel kicker="Notification Inbox" title="Alerts, reviews, simulations, and operator activity" description="Everything important bubbles into a unified inbox so operators do not have to context-switch.">
+          <NotificationList items={data.notifications} />
+        </Panel>
+
+        <Panel kicker="Scenario Driver" title="Stress-test the room" description="Stream more evidence into the system while keeping notes and monitoring readiness.">
+          <SimulationControls scenarios={dashboard.scenarioCatalog} onDone={center.refresh} />
+          <div className="stack gap-sm">
+            {Object.entries(data.serviceHealth).map(([service, status]) => (
+              <div key={service} className="service-card">
+                <p>{titleCase(service.replace(/([A-Z])/g, " $1"))}</p>
+                <StatusPill label={titleCase(status)} tone={status === "healthy" ? "positive" : "warning"} />
+              </div>
+            ))}
+          </div>
+        </Panel>
+      </div>
