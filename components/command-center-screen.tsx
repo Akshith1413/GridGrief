@@ -155,3 +155,59 @@ export function CommandCenterScreen() {
           </div>
         </Panel>
       </div>
+
+      <div className="split-grid">
+        <Panel kicker="Responder Notes" title="Attach human judgment to live profiles" description="Case notes make the platform feel like an actual operations product instead of a read-only demo.">
+          <form className="stack gap-sm" onSubmit={submitCaseNote}>
+            <div className="form-grid">
+              <label className="field">
+                <span>Linked Person</span>
+                <select className="input" value={personId} onChange={(event) => setPersonId(event.target.value)}>
+                  <option value="">General operations note</option>
+                  {dashboard.persons.map((person) => (
+                    <option key={person.id} value={person.id}>
+                      {person.canonicalName}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="field">
+                <span>Priority</span>
+                <select className="input" value={priority} onChange={(event) => setPriority(event.target.value)}>
+                  <option value="high">High</option>
+                  <option value="medium">Medium</option>
+                  <option value="low">Low</option>
+                </select>
+              </label>
+            </div>
+            <label className="field">
+              <span>Title</span>
+              <input className="input" value={title} onChange={(event) => setTitle(event.target.value)} required />
+            </label>
+            <label className="field">
+              <span>Note</span>
+              <textarea className="input textarea" value={body} onChange={(event) => setBody(event.target.value)} required />
+            </label>
+            <div className="button-row">
+              <button className="button" type="submit">
+                Save Case Note
+              </button>
+              <p className="inline-note">{message}</p>
+            </div>
+          </form>
+
+          <div className="stack gap-sm">
+            {data.caseNotes.slice(0, 8).map((note) => (
+              <article key={note.id} className={`note-card note-card-${note.priority}`}>
+                <div className="person-row-main">
+                  <strong>{note.title}</strong>
+                  <StatusPill label={titleCase(note.priority)} tone={note.priority === "high" ? "critical" : "warning"} />
+                </div>
+                <p>{note.body}</p>
+                <span className="inline-note">
+                  {note.personName ?? "General ops"} | {note.actor} | {formatDateTime(note.createdAt)}
+                </span>
+              </article>
+            ))}
+          </div>
+        </Panel>
