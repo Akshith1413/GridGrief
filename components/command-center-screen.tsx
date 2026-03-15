@@ -211,3 +211,48 @@ export function CommandCenterScreen() {
             ))}
           </div>
         </Panel>
+
+        <Panel kicker="Field Signals" title="Where momentum is building" description="A compact analytics rail for hotspots, conflicts, and source reliability.">
+          <div className="stack gap-sm">
+            {analytics.hotspotLeaderboard.slice(0, 5).map((spot) => (
+              <div key={spot.locationId} className="leaderboard-item">
+                <div>
+                  <strong>{spot.locationName}</strong>
+                  <p>{spot.count} linked reports</p>
+                </div>
+                <span className="leaderboard-value">{spot.count}</span>
+              </div>
+            ))}
+          </div>
+          <div className="stack gap-sm">
+            {analytics.conflictLeaderboard.length ? (
+              analytics.conflictLeaderboard.slice(0, 4).map((person) => (
+                <div key={person.personId} className="leaderboard-item">
+                  <div>
+                    <strong>{person.name}</strong>
+                    <p>Manual verification still needed</p>
+                  </div>
+                  <span className="leaderboard-value">{person.conflicts}</span>
+                </div>
+              ))
+            ) : (
+              <div className="empty-state">
+                <h3>No conflict-heavy profiles</h3>
+                <p>The live graph is internally consistent right now.</p>
+              </div>
+            )}
+          </div>
+          <div className="stack gap-sm">
+            {Object.entries(analytics.sourceWeights).map(([source, weight]) => (
+              <div key={source} className="source-weight-row">
+                <div className="person-row-main">
+                  <span>{titleCase(source)}</span>
+                  <strong>{formatPercent(weight)}</strong>
+                </div>
+                <div className="readiness-track">
+                  <div className="readiness-fill readiness-fill-warning" style={{ width: `${Math.round(weight * 100)}%` }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </Panel>
