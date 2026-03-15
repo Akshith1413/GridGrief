@@ -256,3 +256,48 @@ export function CommandCenterScreen() {
             ))}
           </div>
         </Panel>
+      </div>
+
+      <div className="split-grid">
+        <Panel kicker="Edge Resilience" title="Offline-first capacity picture" description="Edge nodes, autonomy windows, and queued sync pressure from the documented architecture.">
+          <div className="stack gap-sm">
+            {data.edgeNodes.map((node) => (
+              <article key={node.id} className="note-card">
+                <div className="person-row-main">
+                  <strong>{node.name}</strong>
+                  <StatusPill label={titleCase(node.status)} tone={node.status === "online" ? "positive" : "warning"} />
+                </div>
+                <p>{node.hardware}</p>
+                <span className="inline-note">
+                  {node.autonomyHours}h autonomy | queued reports {node.queuedReports}
+                </span>
+              </article>
+            ))}
+          </div>
+        </Panel>
+
+        <Panel kicker="Identity Decisions" title="Review queue snapshot" description="The platform now keeps reviewer decisions visible inside the operations room as well.">
+          <div className="stack gap-sm">
+            {data.reviewQueue.length ? (
+              data.reviewQueue.slice(0, 6).map((proposal) => (
+                <article key={proposal.id} className="note-card">
+                  <div className="person-row-main">
+                    <strong>{formatPercent(proposal.mergeConfidence)}</strong>
+                    <StatusPill label={titleCase(proposal.status)} tone={proposal.status === "pending" ? "warning" : "positive"} />
+                  </div>
+                  <p>{proposal.rationale}</p>
+                  <span className="inline-note">Created {formatDateTime(proposal.createdAt)}</span>
+                </article>
+              ))
+            ) : (
+              <div className="empty-state">
+                <h3>Review queue is clear</h3>
+                <p>Run another scenario or ingest noisier evidence to create duplicate proposals.</p>
+              </div>
+            )}
+          </div>
+        </Panel>
+      </div>
+    </div>
+  );
+}
