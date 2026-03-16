@@ -54,3 +54,44 @@ export function AnalyticsScreen() {
             ))}
           </div>
         </Panel>
+
+        <Panel kicker="Hotspots" title="Report concentration by location" description="Where evidence is currently piling up fastest.">
+          <div className="stack gap-sm">
+            {data.hotspotLeaderboard.map((spot) => (
+              <div key={spot.locationId} className="leaderboard-item">
+                <div>
+                  <strong>{spot.locationName}</strong>
+                  <p>{spot.count} linked reports</p>
+                </div>
+                <span className="leaderboard-value">{spot.count}</span>
+              </div>
+            ))}
+          </div>
+        </Panel>
+      </div>
+
+      <div className="split-grid">
+        <Panel kicker="Readiness" title="Implementation posture" description="A compact view of how complete the platform feels in each subsystem.">
+          <div className="stack gap-sm">
+            {data.implementationReadiness.map((item) => (
+              <ReadinessMeter key={item.label} label={item.label} score={item.score} detail={item.detail} />
+            ))}
+          </div>
+        </Panel>
+
+        <Panel kicker="Source Reliability" title="Configured evidence weights" description="The scoring model's current source trust assumptions.">
+          <div className="stack gap-sm">
+            {Object.entries(data.sourceWeights).map(([source, weight]) => (
+              <div key={source} className="status-bar-card">
+                <div className="person-row-main">
+                  <span>{titleCase(source)}</span>
+                  <span className="status-bar-value">{formatPercent(weight)}</span>
+                </div>
+                <div className="status-bar-track">
+                  <div className="status-bar-fill status-bar-fill-warning" style={{ width: `${Math.round(weight * 100)}%` }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </Panel>
+      </div>
