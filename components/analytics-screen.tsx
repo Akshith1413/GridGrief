@@ -95,3 +95,33 @@ export function AnalyticsScreen() {
           </div>
         </Panel>
       </div>
+
+      <div className="split-grid">
+        <Panel kicker="Conflict Leaderboard" title="Profiles needing human arbitration" description="The people with the most contradictory evidence right now.">
+          <div className="stack gap-sm">
+            {data.conflictLeaderboard.length ? (
+              data.conflictLeaderboard.map((entry) => (
+                <div key={entry.personId} className="leaderboard-item">
+                  <div>
+                    <strong>{entry.name}</strong>
+                    <p>Conflicting movement evidence</p>
+                  </div>
+                  <span className="leaderboard-value">{entry.conflicts}</span>
+                </div>
+              ))
+            ) : (
+              <div className="empty-state">
+                <h3>No conflict-heavy profiles</h3>
+                <p>The graph is currently fairly consistent.</p>
+              </div>
+            )}
+          </div>
+        </Panel>
+
+        <Panel kicker="Notifications" title="Recent analytics-linked activity" description="Notifications that help explain why readiness and hotspot metrics are shifting.">
+          <NotificationList items={data.notifications} />
+        </Panel>
+      </div>
+    </div>
+  );
+}
