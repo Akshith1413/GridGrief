@@ -67,3 +67,51 @@ export function AdminScreen() {
             ))}
           </div>
         </Panel>
+      </div>
+
+      <div className="split-grid">
+        <Panel kicker="Human Review Queue" title="Duplicate merge decisions" description="Approve or dismiss fuzzy identity matches from the review queue.">
+          <div className="stack">
+            {admin.data.reviewQueue.length ? (
+              admin.data.reviewQueue.map((proposal) => (
+                <div key={proposal.id} className="note-card">
+                  <strong>{formatPercent(proposal.mergeConfidence)}</strong>
+                  <p>{proposal.rationale}</p>
+                  <span className="inline-note">
+                    created {formatDateTime(proposal.createdAt)} | status {titleCase(proposal.status)}
+                  </span>
+                  {proposal.status === "pending" ? (
+                    <div className="button-row">
+                      <button className="button" type="button" onClick={() => void resolveProposal(proposal.id, "merge")}>
+                        Merge
+                      </button>
+                      <button className="button button-ghost" type="button" onClick={() => void resolveProposal(proposal.id, "dismiss")}>
+                        Dismiss
+                      </button>
+                    </div>
+                  ) : null}
+                </div>
+              ))
+            ) : (
+              <div className="empty-state">
+                <h3>No pending proposals</h3>
+                <p>Kick off the earthquake scenario to exercise the duplicate-review flow.</p>
+              </div>
+            )}
+          </div>
+        </Panel>
+
+        <Panel kicker="Audit Trail" title="Latest security and operator events" description="Authentication, review actions, resets, and report ingestion are all logged.">
+          <div className="stack">
+            {admin.data.auditLogs.map((log) => (
+              <div key={log.id} className="note-card">
+                <strong>{titleCase(log.type.replace(/[._]/g, " "))}</strong>
+                <p>{log.detail ?? "No detail supplied"}</p>
+                <span className="inline-note">
+                  {log.actor ?? "system"} | {formatDateTime(log.timestamp)}
+                </span>
+              </div>
+            ))}
+          </div>
+        </Panel>
+      </div>
