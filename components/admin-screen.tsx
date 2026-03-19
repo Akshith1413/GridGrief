@@ -115,3 +115,61 @@ export function AdminScreen() {
           </div>
         </Panel>
       </div>
+
+      <div className="split-grid">
+        <Panel kicker="Notifications" title="Operator inbox" description="Case notes, simulation changes, alerts, and review actions converge here.">
+          <NotificationList items={admin.data.notifications} />
+        </Panel>
+
+        <Panel kicker="Case Notes" title="Responder memory layer" description="Recent human-authored notes attached to profiles or to general operations.">
+          <div className="stack gap-sm">
+            {admin.data.caseNotes.map((note) => (
+              <div key={note.id} className={`note-card note-card-${note.priority}`}>
+                <strong>{note.title}</strong>
+                <p>{note.body}</p>
+                <span className="inline-note">
+                  {note.personName ?? "General ops"} | {note.actor} | {formatDateTime(note.createdAt)}
+                </span>
+              </div>
+            ))}
+          </div>
+        </Panel>
+      </div>
+
+      <div className="split-grid">
+        <Panel kicker="Edge Nodes" title="Offline disaster zone capacity" description="A clearer view into the documented edge-node layer.">
+          <div className="stack">
+            {admin.data.edgeNodes.map((node) => (
+              <div key={node.id} className="note-card">
+                <strong>{node.name}</strong>
+                <p>{node.hardware}</p>
+                <span className="inline-note">
+                  {node.autonomyHours}h autonomy | queued reports {node.queuedReports} | {titleCase(node.status)}
+                </span>
+              </div>
+            ))}
+          </div>
+        </Panel>
+        <Panel kicker="Users & Subscriptions" title="RBAC and alert watchers" description="Demo personas across admin, responder, reporter, and family roles.">
+          <div className="stack gap-sm">
+            {admin.data.users.map((user) => (
+              <div key={user.id} className="service-card">
+                <p>{user.name}</p>
+                <span className="inline-note">
+                  {user.email} | {titleCase(user.role)}
+                </span>
+              </div>
+            ))}
+            {admin.data.subscriptions.map((subscription) => (
+              <div key={subscription.id} className="note-card">
+                <strong>{subscription.personQuery || subscription.personId || "Person watch"}</strong>
+                <p>{subscription.channels.join(", ")}</p>
+                <span className="inline-note">threshold {formatPercent(subscription.threshold)}</span>
+              </div>
+            ))}
+          </div>
+        </Panel>
+      </div>
+    </div>
+  );
+}
