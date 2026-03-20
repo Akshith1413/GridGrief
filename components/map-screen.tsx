@@ -34,3 +34,30 @@ export function MapScreen() {
       <Panel kicker="Operations Map" title="Current disaster zone picture" description="A responsive tactical rendering of the backend location graph.">
         <MapCanvas snapshot={map.data} />
       </Panel>
+
+      <div className="split-grid">
+        <Panel kicker="Tracked Trails" title="Current movement inference" description="Each row is the latest person trail inferred from sighting timestamps.">
+          <div className="stack">
+            {map.data.persons.map((person) => (
+              <div key={person.id} className="note-card">
+                <strong>{person.name}</strong>
+                <p>{person.trail.map((point) => point.locationName).join(" -> ") || "Awaiting enough location evidence"}</p>
+                <span className="inline-note">{formatPercent(person.confidence)} confidence</span>
+              </div>
+            ))}
+          </div>
+        </Panel>
+        <Panel kicker="Hotspot Density" title="Heatmap intensities" description="Where the most reports are accumulating right now.">
+          <div className="stack">
+            {map.data.heatmap.map((spot) => (
+              <div key={spot.locationId} className="note-card">
+                <strong>{spot.locationName}</strong>
+                <p>{spot.intensity} linked reports</p>
+              </div>
+            ))}
+          </div>
+        </Panel>
+      </div>
+    </div>
+  );
+}
