@@ -37,3 +37,39 @@ export function GraphScreen() {
           <SimulationControls scenarios={dashboard.data.scenarioCatalog} onDone={graph.refresh} />
         </Panel>
       </div>
+
+      <div className="split-grid">
+        <Panel kicker="Duplicate Detection" title="Merge proposals" description="Identity-service style outputs surfaced for review.">
+          <div className="stack">
+            {graph.data.reviewQueue.length ? (
+              graph.data.reviewQueue.map((proposal) => (
+                <div key={proposal.id} className="note-card">
+                  <strong>{formatPercent(proposal.mergeConfidence)}</strong>
+                  <p>{proposal.rationale}</p>
+                  <span className="inline-note">
+                    fuzzy {proposal.strategyBreakdown.fuzzyName} | neighborhood {proposal.strategyBreakdown.graphNeighborhood}
+                  </span>
+                </div>
+              ))
+            ) : (
+              <div className="empty-state">
+                <h3>No pending duplicate proposals</h3>
+                <p>Run the earthquake simulation to surface transliteration and alias merge candidates.</p>
+              </div>
+            )}
+          </div>
+        </Panel>
+        <Panel kicker="Source Balance" title="Ingestion mix" description="The graph is only as rich as the upstream source diversity feeding it.">
+          <div className="source-mix">
+            {dashboard.data.sourceMix.map((source) => (
+              <div key={source.type} className="source-chip">
+                <span>{titleCase(source.type)}</span>
+                <strong>{source.count}</strong>
+              </div>
+            ))}
+          </div>
+        </Panel>
+      </div>
+    </div>
+  );
+}
