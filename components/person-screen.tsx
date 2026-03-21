@@ -39,3 +39,43 @@ export function PersonScreen({ personId }: { personId: string }) {
       });
     }
   }
+
+  if (detail.loading && !detail.data) {
+    return <LoadingPanel label="Loading person intelligence profile..." />;
+  }
+
+  if (detail.error || !detail.data) {
+    return <ErrorPanel message={detail.error ?? "Person detail not found."} />;
+  }
+
+  const payload = detail.data;
+  const person = payload.person;
+
+  return (
+    <div className="page-stack">
+      <section className="hero-grid">
+        <div className="hero-copy">
+          <p className="eyebrow">Person Profile</p>
+          <h1>{person.canonicalName}</h1>
+          <p className="hero-text">
+            {person.ageEstimate ? `${person.ageEstimate} years old` : "Age unknown"} | {titleCase(person.gender)} | last seen at{" "}
+            {person.lastKnownLocation?.name ?? "location pending"}
+          </p>
+          <div className="mini-stat-row">
+            <StatusPill label={titleCase(person.status)} tone={person.status === "found" ? "positive" : "warning"} />
+            {person.conflictFlags.length ? (
+              <StatusPill label={`${person.conflictFlags.length} conflict flags`} tone="critical" />
+            ) : null}
+          </div>
+        </div>
+        <Panel kicker="Composite Confidence" title={formatPercent(person.compositeConfidence)} description={person.explanation.summary}>
+          <ConfidenceBar value={person.compositeConfidence} />
+          <p className="inline-note">{person.explanation.confidence_breakdown}</p>
+          <div className="button-row">
+            <button className="button" type="button" onClick={() => void subscribe()}>
+              Subscribe For Alerts
+            </button>
+            <p className="inline-note">{subscriptionMessage}</p>
+          </div>
+        </Panel>
+      </section>
