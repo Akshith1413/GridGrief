@@ -79,3 +79,40 @@ export function PersonScreen({ personId }: { personId: string }) {
           </div>
         </Panel>
       </section>
+
+      <div className="split-grid">
+        <Panel kicker="Explainability" title="Evidence breakdown" description="Every major source and contribution is exposed to responders and families.">
+          <div className="stack">
+            {person.explanation.sources.map((source) => (
+              <div key={`${source.type}-${source.timestamp}`} className="note-card">
+                <strong>{titleCase(source.type)}</strong>
+                <p>{source.detail}</p>
+                <span className="inline-note">
+                  weight {source.weight} | contribution {source.contribution} | {formatDateTime(source.timestamp)}
+                </span>
+              </div>
+            ))}
+          </div>
+        </Panel>
+
+        <Panel kicker="Conflicts & Alerts" title="Operational caveats" description="Contradictions are stored, not hidden, so confidence remains explainable.">
+          <div className="stack">
+            {person.conflictFlags.length ? (
+              person.conflictFlags.map((flag) => (
+                <div key={flag} className="note-card note-card-critical">
+                  <p>{flag}</p>
+                </div>
+              ))
+            ) : (
+              <EmptyState title="No conflict flags" description="Current evidence is internally consistent." />
+            )}
+            {payload.alerts.map((alert) => (
+              <div key={alert.id} className="note-card">
+                <strong>{titleCase(alert.reason)}</strong>
+                <p>{alert.message}</p>
+                <span className="inline-note">{formatDateTime(alert.createdAt)}</span>
+              </div>
+            ))}
+          </div>
+        </Panel>
+      </div>
