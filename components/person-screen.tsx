@@ -116,3 +116,38 @@ export function PersonScreen({ personId }: { personId: string }) {
           </div>
         </Panel>
       </div>
+
+      <div className="split-grid">
+        <Panel kicker="Movement Timeline" title="Chronological sightings" description="The temporal graph becomes a human-readable trail here.">
+          <div className="stack">
+            {payload.movementTrail.map((point) => (
+              <div key={point.eventId} className="timeline-item">
+                <div className="timeline-dot" />
+                <div>
+                  <strong>{point.locationName}</strong>
+                  <p>{titleCase(point.sourceType)} evidence</p>
+                  <span className="inline-note">{formatDateTime(point.timestamp)}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Panel>
+
+        <Panel kicker="Duplicate Review" title="Identity proposals" description="Fuzzy merges stay visible for human review when confidence is borderline.">
+          <div className="stack">
+            {payload.duplicates.length ? (
+              payload.duplicates.map((proposal) => (
+                <div key={proposal.id} className="note-card">
+                  <strong>{formatPercent(proposal.mergeConfidence)}</strong>
+                  <p>{proposal.rationale}</p>
+                  <span className="inline-note">
+                    fuzzy {proposal.strategyBreakdown.fuzzyName} | descriptors {proposal.strategyBreakdown.descriptor}
+                  </span>
+                </div>
+              ))
+            ) : (
+              <EmptyState title="No duplicate proposals" description="This profile is currently distinct in the graph." />
+            )}
+          </div>
+        </Panel>
+      </div>
