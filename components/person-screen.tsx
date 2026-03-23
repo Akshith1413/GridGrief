@@ -151,3 +151,47 @@ export function PersonScreen({ personId }: { personId: string }) {
           </div>
         </Panel>
       </div>
+
+      <Panel kicker="Casework Notes" title="Responder context layer" description="Human context is now attached directly to the profile for handoffs and follow-up.">
+        <div className="stack">
+          {payload.caseNotes.length ? (
+            payload.caseNotes.map((note) => (
+              <article key={note.id} className={`note-card note-card-${note.priority}`}>
+                <div className="person-row-main">
+                  <strong>{note.title}</strong>
+                  <StatusPill label={titleCase(note.priority)} tone={note.priority === "high" ? "critical" : "warning"} />
+                </div>
+                <p>{note.body}</p>
+                <span className="inline-note">
+                  {note.actor} | {formatDateTime(note.createdAt)}
+                </span>
+              </article>
+            ))
+          ) : (
+            <EmptyState title="No responder notes yet" description="Notes created in the command center will appear here." />
+          )}
+        </div>
+      </Panel>
+
+      <Panel kicker="Evidence Records" title="Source-by-source provenance" description="Every event stays accessible with source trust and location context.">
+        <div className="stack">
+          {payload.evidence.map((event) => (
+            <article key={event.id} className="evidence-card">
+              <div className="person-row-main">
+                <div>
+                  <h3>{titleCase(event.sourceType)} report</h3>
+                  <p>{event.location?.name ?? "Location pending"}</p>
+                </div>
+                <StatusPill label={`${Math.round(event.sourceTrustScore * 100)} trust`} tone="warning" />
+              </div>
+              <p>{event.rawText}</p>
+              <span className="inline-note">
+                NLP confidence {formatPercent(event.nlpConfidence)} | {formatDateTime(event.timestamp)}
+              </span>
+            </article>
+          ))}
+        </div>
+      </Panel>
+    </div>
+  );
+}
